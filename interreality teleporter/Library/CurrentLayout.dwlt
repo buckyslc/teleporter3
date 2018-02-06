@@ -106,10 +106,10 @@ MonoBehaviour:
     y: 30
     width: 1680
     height: 917
-  m_MinSize: {x: 887, y: 342}
-  m_MaxSize: {x: 16012, y: 8042}
+  m_MinSize: {x: 887, y: 492}
+  m_MaxSize: {x: 16012, y: 14042}
   vertical: 0
-  controlID: 103
+  controlID: 83
 --- !u!114 &6
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -130,10 +130,10 @@ MonoBehaviour:
     y: 0
     width: 1309
     height: 917
-  m_MinSize: {x: 610, y: 342}
-  m_MaxSize: {x: 12010, y: 8042}
+  m_MinSize: {x: 610, y: 492}
+  m_MaxSize: {x: 12010, y: 14042}
   vertical: 1
-  controlID: 104
+  controlID: 84
 --- !u!114 &7
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -158,7 +158,7 @@ MonoBehaviour:
   m_MinSize: {x: 610, y: 221}
   m_MaxSize: {x: 12010, y: 4021}
   vertical: 0
-  controlID: 105
+  controlID: 85
 --- !u!114 &8
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -253,14 +253,14 @@ MonoBehaviour:
     y: 641
     width: 1309
     height: 276
-  m_MinSize: {x: 100, y: 100}
-  m_MaxSize: {x: 4000, y: 4000}
-  m_ActualView: {fileID: 18}
+  m_MinSize: {x: 232, y: 271}
+  m_MaxSize: {x: 10002, y: 10021}
+  m_ActualView: {fileID: 17}
   m_Panes:
   - {fileID: 17}
   - {fileID: 18}
-  m_Selected: 1
-  m_LastSelected: 0
+  m_Selected: 0
+  m_LastSelected: 1
 --- !u!114 &12
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -395,7 +395,7 @@ MonoBehaviour:
   m_PersistentViewDataDictionary: {fileID: 0}
   m_TreeViewState:
     scrollPos: {x: 0, y: 0}
-    m_SelectedIDs: 
+    m_SelectedIDs: 84010000
     m_LastClickedID: 0
     m_ExpandedIDs: 9efbffff00000000
     m_RenameOverlay:
@@ -563,20 +563,19 @@ MonoBehaviour:
     m_ShowAllHits: 0
     m_SearchArea: 0
     m_Folders:
-    - Assets/ColorPicker/Scripts
+    - Assets/Resources/TexturePainter ( Place Me Out of Resources)/Sprites
   m_ViewMode: 1
   m_StartGridSize: 96
   m_LastFolders:
-  - Assets/ColorPicker/Scripts
+  - Assets/Resources/TexturePainter ( Place Me Out of Resources)/Sprites
   m_LastFoldersGridSize: 96
-  m_LastProjectPath: C:\Users\marti\Documents\GitHub\clone\clone-of-teleporter-master\interreality
-    teleporter
+  m_LastProjectPath: C:\Users\marti\Documents\GitHub\teleporter\interreality teleporter
   m_IsLocked: 0
   m_FolderTreeState:
-    scrollPos: {x: 0, y: 0}
-    m_SelectedIDs: 50290000
-    m_LastClickedID: 10576
-    m_ExpandedIDs: 000000006e280000822a00000a2b0000cc2b0000
+    scrollPos: {x: 0, y: 118}
+    m_SelectedIDs: 7c280000
+    m_LastClickedID: 10364
+    m_ExpandedIDs: 000000006e28000058290000822a00000a2b0000cc2b000000ca9a3bffffff7f
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -604,7 +603,7 @@ MonoBehaviour:
     scrollPos: {x: 0, y: 0}
     m_SelectedIDs: 9032f1ff
     m_LastClickedID: 0
-    m_ExpandedIDs: 000000006e280000822a00000a2b0000cc2b0000
+    m_ExpandedIDs: 000000006e28000058290000822a00000a2b0000cc2b0000
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -629,10 +628,10 @@ MonoBehaviour:
       m_Icon: {fileID: 0}
       m_ResourceFile: 
   m_ListAreaState:
-    m_SelectedInstanceIDs: 04060000
-    m_LastClickedInstanceID: 1540
+    m_SelectedInstanceIDs: 
+    m_LastClickedInstanceID: 0
     m_HadKeyboardFocusLastEvent: 1
-    m_ExpandedInstanceIDs: 1c220000ec21000042d30400c8cb08007022000048d600006e220000260700009c070000da7b05003e0b0000883200001096000030230000a83000000a310000000000006c2600009c290000029b0000e8580300985903006e3f0000aa1d02005a1e0200b61e0200d41e0200c82a00003a2b0000
+    m_ExpandedInstanceIDs: 1c220000ec21000042d30400c8cb08007022000048d600006e220000260700009c070000da7b05003e0b0000883200001096000030230000a83000000a310000000000006c2600009c290000029b0000e8580300985903006e3f0000aa1d02005a1e0200b61e0200d41e0200c82a00003a2b000076290000
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
