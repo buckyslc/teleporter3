@@ -46,7 +46,7 @@ public class ViveTexturePainter : MonoBehaviour {
 		if(HitTestUVPosition(ref uvWorldPosition)){
 			GameObject brushObj;
 
-            brushColor.a = 1f; // 1f / Mathf.Exp(brushSize * 150); // Brushes have alpha to have a merging effect when painted over.
+            brushColor.a = 1f / Mathf.Exp(brushSize * 500); // Brushes have alpha to have a merging effect when painted over.
 
             brushObj =(GameObject)Instantiate(Resources.Load("TexturePainter-Instances/BrushEntity")); //Paint a brush
 			brushObj.GetComponent<SpriteRenderer>().color=brushColor; //Set the brush color
@@ -70,7 +70,7 @@ public class ViveTexturePainter : MonoBehaviour {
 
         Ray cursorRay = new Ray(rController.transform.position, -rController.transform.up);
         if (Physics.Raycast(cursorRay,out hit, MAX_DISTANCE)){
-            brushSize = (hit.distance / MAX_DISTANCE) * .01f;
+            brushSize = (hit.distance / MAX_DISTANCE) * .02f;
 			MeshCollider meshCollider = hit.collider as MeshCollider;
 			if (meshCollider == null || meshCollider.sharedMesh == null)
 				return false;			
