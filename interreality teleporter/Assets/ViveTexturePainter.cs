@@ -27,14 +27,21 @@ public class ViveTexturePainter : MonoBehaviour {
 	int brushCounter=0,MAX_BRUSH_COUNT=1000; //To avoid having millions of brushes
 	bool saving=false; //Flag to check if we are saving the texture
 
+    public ParticleSystem ps;
 
     void Update () {
         brushColor = ColorManager.Instance.color; //Updates our painted color with the selected color
+        //var main = ps.main;
+        //main.startColor = brushColor;
         var device = SteamVR_Controller.Input((int)rController.index);
         if (device.GetTouch(SteamVR_Controller.ButtonMask.Trigger))
         {
-			DoAction();
-		}
+            ps.Play();
+            DoAction();
+		} else
+        {
+            ps.Stop();
+        }
 		//UpdateBrushCursor ();
 	}
 
