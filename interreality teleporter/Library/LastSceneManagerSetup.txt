@@ -1,4 +1,4 @@
 sceneSetups:
-- path: Assets/moving on.unity
+- path: Assets/cardboard canvas.unity
   isLoaded: 1
   isActive: 1
