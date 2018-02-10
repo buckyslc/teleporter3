@@ -103,7 +103,7 @@ public class TexturePainter : MonoBehaviour {
 		foreach (Transform child in brushContainer.transform) {//Clear brushes
 			Destroy(child.gameObject);
 		}
-		//StartCoroutine ("SaveTextureToFile"); //Do you want to save the texture? This is your method!
+		StartCoroutine ("SaveTextureToFile"); //Do you want to save the texture? This is your method!
 		Invoke ("ShowCursor", 0.1f);
 	}
 	//Show again the user cursor (To avoid saving it to the texture)

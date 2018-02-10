@@ -22,8 +22,10 @@ public class ViveTexturePainter : MonoBehaviour {
 	public Material baseMaterial; // The material of our base texture (Were we will save the painted texture)
 
 	Painter_BrushMode mode; //Our painter mode (Paint brushes or decals)
-	float brushSize=3.0f; //The size of our brush
-	Color brushColor; //The selected color
+	float brushSize; //The size of our brush
+    public float brushScale; //The scale of our brush
+    public float brushDropoff; //The dropoff of our brush
+    Color brushColor; //The selected color
 	int brushCounter=0,MAX_BRUSH_COUNT=1000; //To avoid having millions of brushes
 	bool saving=false; //Flag to check if we are saving the texture
 
@@ -53,7 +55,7 @@ public class ViveTexturePainter : MonoBehaviour {
 		if(HitTestUVPosition(ref uvWorldPosition)){
 			GameObject brushObj;
 
-            brushColor.a = 1f / Mathf.Exp(brushSize * 100); // Brushes have alpha to have a merging effect when painted over.
+            brushColor.a = 1f / Mathf.Exp(brushSize * brushDropoff); // Brushes have alpha to have a merging effect when painted over.
 
             brushObj =(GameObject)Instantiate(Resources.Load("TexturePainter-Instances/BrushEntity")); //Paint a brush
 			brushObj.GetComponent<SpriteRenderer>().color=brushColor; //Set the brush color
@@ -77,7 +79,7 @@ public class ViveTexturePainter : MonoBehaviour {
 
         Ray cursorRay = new Ray(rController.transform.position, -rController.transform.up);
         if (Physics.Raycast(cursorRay,out hit, MAX_DISTANCE)){
-            brushSize = (hit.distance / MAX_DISTANCE) * .1f;
+            brushSize = (hit.distance / MAX_DISTANCE) * brushScale;
 			MeshCollider meshCollider = hit.collider as MeshCollider;
 			if (meshCollider == null || meshCollider.sharedMesh == null)
 				return false;			
