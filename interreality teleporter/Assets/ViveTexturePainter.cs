@@ -28,28 +28,41 @@ public class ViveTexturePainter : MonoBehaviour {
     Color brushColor; //The selected color
 	int brushCounter=0,MAX_BRUSH_COUNT=1000; //To avoid having millions of brushes
 	bool saving=false; //Flag to check if we are saving the texture
-
+    private IEnumerator coroutine;
     public ParticleSystem ps;
     //public BrushSize size;
+    Texture2D tex;
     void Update () {
+        //Debug.Log("void Update started");
         brushColor = ColorManager.Instance.color; //Updates our painted color with the selected color
+        //Debug.Log("brushColor updated");
         //var main = ps.main;
         //main.startColor = brushColor;
         var device = SteamVR_Controller.Input((int)rController.index);
+        //Debug.Log("check trigger");
         if (device.GetTouch(SteamVR_Controller.ButtonMask.Trigger))
         {
             ps.Play();
+            //Debug.Log("PS PLAY");
             DoAction();
-		} else
+        }
+        else if (device.GetTouch(SteamVR_Controller.ButtonMask.Touchpad))
+        {
+            Debug.Log("                                        TOUCHPAD");     
+            StartCoroutine(SaveTextureToFile(tex));
+        }
+        else
         {
             ps.Stop();
+            //Debug.Log("ps stopped");
         }
 		//UpdateBrushCursor ();
 	}
 
 	//The main action, instantiates a brush or decal entity at the clicked position on the UV map
-	void DoAction(){	
-		if (saving)
+	void DoAction(){
+        //Debug.Log("DoAction started");
+        if (saving)
 			return;
 		Vector3 uvWorldPosition=Vector3.zero;		
 		if(HitTestUVPosition(ref uvWorldPosition)){
@@ -65,9 +78,11 @@ public class ViveTexturePainter : MonoBehaviour {
 			brushObj.transform.localScale=Vector3.one*brushSize; //The size of the brush
 		}
 		brushCounter++; //Add to the max brushes
-		if (brushCounter >= MAX_BRUSH_COUNT) { //If we reach the max brushes available, flatten the texture and clear the brushes
+        Debug.Log(brushCounter);
+        if (brushCounter >= MAX_BRUSH_COUNT) { //If we reach the max brushes available, flatten the texture and clear the brushes
 			//saving=true;
-			//Invoke("SaveTexture",0.1f);			
+			//Invoke("SaveTexture",0.1f);
+            Invoke("SaveTexture",0.1f);			
 		}
 	}
 
@@ -95,20 +110,24 @@ public class ViveTexturePainter : MonoBehaviour {
 	}
 
     //Sets the base material with a our canvas texture, then removes all our brushes
-    void SaveTexture(){		
-		brushCounter=0;
+    void SaveTexture(){
+        Debug.Log("                                   void SaveTexture called.");
+        brushCounter =0;
 		System.DateTime date = System.DateTime.Now;
 		RenderTexture.active = canvasTexture;
-		Texture2D tex = new Texture2D(canvasTexture.width, canvasTexture.height, TextureFormat.RGB24, false);		
-		tex.ReadPixels (new Rect (0, 0, canvasTexture.width, canvasTexture.height), 0, 0);
+		//Texture2D tex = new Texture2D(canvasTexture.width, canvasTexture.height, TextureFormat.RGB24, false);
+        tex = new Texture2D(canvasTexture.width, canvasTexture.height, TextureFormat.RGB24, false);
+        tex.ReadPixels (new Rect (0, 0, canvasTexture.width, canvasTexture.height), 0, 0);
 		tex.Apply ();
 		RenderTexture.active = null;
 		baseMaterial.mainTexture =tex;	//Put the painted texture as the base
 		foreach (Transform child in brushContainer.transform) {//Clear brushes
 			Destroy(child.gameObject);
-		}
+            Debug.Log("Destroy(child.gameObject) called.");
+        }
 		//StartCoroutine ("SaveTextureToFile"); //Do you want to save the texture? This is your method!
-		Invoke ("ShowCursor", 0.1f);
+        
+        Invoke ("ShowCursor", 0.1f);
 	}
 	//Show again the user cursor (To avoid saving it to the texture)
 	void ShowCursor(){	
@@ -122,11 +141,13 @@ public class ViveTexturePainter : MonoBehaviour {
 		//brushCursor.transform.localScale = Vector3.one * brushSize;
 	}
 
-	////////////////// OPTIONAL METHODS //////////////////
+    ////////////////// OPTIONAL METHODS //////////////////
 
-	#if !UNITY_WEBPLAYER 
-		IEnumerator SaveTextureToFile(Texture2D savedTexture){		
-			brushCounter=0;
+//#if !UNITY_WEBPLAYER
+        //IEnumerator SaveTextureToFile(Texture2D savedTexture){
+        IEnumerator SaveTextureToFile(Texture2D savedTexture){
+            Debug.Log("                                               SaveTextureToFile called.");		
+            brushCounter = 0;
 			string fullPath=System.IO.Directory.GetCurrentDirectory()+"\\UserCanvas\\";
 			System.DateTime date = System.DateTime.Now;
 			string fileName = "CanvasTexture.png";
@@ -137,5 +158,5 @@ public class ViveTexturePainter : MonoBehaviour {
 			Debug.Log ("<color=orange>Saved Successfully!</color>"+fullPath+fileName);
 			yield return null;
 		}
-	#endif
+	//#endif
 }
