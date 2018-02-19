@@ -26,11 +26,11 @@ public class ViveTexturePainter : MonoBehaviour {
     public float brushScale; //The scale of our brush
     public float brushDropoff; //The dropoff of our brush
     Color brushColor; //The selected color
-	int brushCounter=0,MAX_BRUSH_COUNT=1000; //To avoid having millions of brushes
+	int brushCounter=0,MAX_BRUSH_COUNT=2000; //To avoid having millions of brushes
 	bool saving=false; //Flag to check if we are saving the texture
     private IEnumerator coroutine;
     public ParticleSystem ps;
-    public string fileName = "CanvasTexture4.png";
+    public string fileName = "CanvasTextureXXX.png";
     //public BrushSize size;
     Texture2D tex;
     private Rect photoRect;
@@ -55,6 +55,7 @@ public class ViveTexturePainter : MonoBehaviour {
 
         if (device.GetTouchDown(SteamVR_Controller.ButtonMask.Touchpad)) {
             Debug.Log("                                        TOUCHPAD");
+            Invoke("SaveTexture", 0.001f);
             StartCoroutine(SaveTextureToFile(tex));
             //StartCoroutine(TakeScreenshot());
         }
@@ -85,7 +86,7 @@ public class ViveTexturePainter : MonoBehaviour {
         if (brushCounter >= MAX_BRUSH_COUNT) { //If we reach the max brushes available, flatten the texture and clear the brushes
 			//saving=true;
 			//Invoke("SaveTexture",0.1f);
-            Invoke("SaveTexture",0.1f);			
+            Invoke("SaveTexture",0.01f);			
 		}
 	}
 
