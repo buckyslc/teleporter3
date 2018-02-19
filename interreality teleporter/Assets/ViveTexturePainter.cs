@@ -30,8 +30,11 @@ public class ViveTexturePainter : MonoBehaviour {
 	bool saving=false; //Flag to check if we are saving the texture
     private IEnumerator coroutine;
     public ParticleSystem ps;
+    public string fileName = "CanvasTexture4.png";
     //public BrushSize size;
     Texture2D tex;
+    private Rect photoRect;
+
     void Update () {
         //Debug.Log("void Update started");
         brushColor = ColorManager.Instance.color; //Updates our painted color with the selected color
@@ -40,24 +43,24 @@ public class ViveTexturePainter : MonoBehaviour {
         //main.startColor = brushColor;
         var device = SteamVR_Controller.Input((int)rController.index);
         //Debug.Log("check trigger");
-        if (device.GetTouch(SteamVR_Controller.ButtonMask.Trigger))
-        {
+        if (device.GetTouch(SteamVR_Controller.ButtonMask.Trigger)) {
             ps.Play();
             //Debug.Log("PS PLAY");
             DoAction();
         }
-        else if (device.GetTouch(SteamVR_Controller.ButtonMask.Touchpad))
-        {
-            Debug.Log("                                        TOUCHPAD");     
-            StartCoroutine(SaveTextureToFile(tex));
-        }
-        else
-        {
+        else {
             ps.Stop();
             //Debug.Log("ps stopped");
         }
-		//UpdateBrushCursor ();
-	}
+
+        if (device.GetTouchDown(SteamVR_Controller.ButtonMask.Touchpad)) {
+            Debug.Log("                                        TOUCHPAD");
+            StartCoroutine(SaveTextureToFile(tex));
+            //StartCoroutine(TakeScreenshot());
+        }
+
+        //UpdateBrushCursor ();
+    }
 
 	//The main action, instantiates a brush or decal entity at the clicked position on the UV map
 	void DoAction(){
@@ -78,7 +81,7 @@ public class ViveTexturePainter : MonoBehaviour {
 			brushObj.transform.localScale=Vector3.one*brushSize; //The size of the brush
 		}
 		brushCounter++; //Add to the max brushes
-        Debug.Log(brushCounter);
+        Debug.Log("brushCounter increased");
         if (brushCounter >= MAX_BRUSH_COUNT) { //If we reach the max brushes available, flatten the texture and clear the brushes
 			//saving=true;
 			//Invoke("SaveTexture",0.1f);
@@ -111,7 +114,7 @@ public class ViveTexturePainter : MonoBehaviour {
 
     //Sets the base material with a our canvas texture, then removes all our brushes
     void SaveTexture(){
-        Debug.Log("                                   void SaveTexture called.");
+        Debug.Log("                                   void SaveTexture (not to file) called.");
         brushCounter =0;
 		System.DateTime date = System.DateTime.Now;
 		RenderTexture.active = canvasTexture;
@@ -123,7 +126,7 @@ public class ViveTexturePainter : MonoBehaviour {
 		baseMaterial.mainTexture =tex;	//Put the painted texture as the base
 		foreach (Transform child in brushContainer.transform) {//Clear brushes
 			Destroy(child.gameObject);
-            Debug.Log("Destroy(child.gameObject) called.");
+            Debug.Log("Brushes cleared");
         }
 		//StartCoroutine ("SaveTextureToFile"); //Do you want to save the texture? This is your method!
         
@@ -150,7 +153,7 @@ public class ViveTexturePainter : MonoBehaviour {
             brushCounter = 0;
 			string fullPath=System.IO.Directory.GetCurrentDirectory()+"\\UserCanvas\\";
 			System.DateTime date = System.DateTime.Now;
-			string fileName = "CanvasTexture.png";
+			//string fileName = "CanvasTexturexxx.png";
 			if (!System.IO.Directory.Exists(fullPath))		
 				System.IO.Directory.CreateDirectory(fullPath);
 			var bytes = savedTexture.EncodeToPNG();
@@ -158,5 +161,44 @@ public class ViveTexturePainter : MonoBehaviour {
 			Debug.Log ("<color=orange>Saved Successfully!</color>"+fullPath+fileName);
 			yield return null;
 		}
-	//#endif
+    //#endif
+
+    ////////////// SAVE SNAPSHOT ////////////////////////////
+
+    private IEnumerator TakeScreenshot()
+    {
+        Camera cam = canvasCam; //Camera cam = Camera.main;
+        Texture2D image = new Texture2D(2048, 2048);  //make public?
+
+        RenderTexture currentRT = RenderTexture.active;
+
+        RenderTexture.active = cam.targetTexture;
+        cam.Render();
+
+        yield return new WaitForEndOfFrame();
+
+        photoRect = new Rect(0, 0, 264, 592);
+        image.ReadPixels(photoRect, 0, 0);
+
+        //Resize the image. Useful if you don't need a 1:1 screenshot.
+        //4 is just used as an example. You could use 10 to resize it
+        //to a tenth of the original scale or whatever floats your boat.
+        //if (resizePhotos)
+        //    TextureScale.Bilinear(image, image.width / 4, image.height / 4);
+
+        image.Apply();
+        RenderTexture.active = currentRT;
+
+        //target.renderer.material.mainTexture = image;
+
+        //Save it as PNG, but it could easily be changed to JPG
+        byte[] bytes = image.EncodeToPNG();
+
+        string filename = "MyScreenshot.png";    //make public?
+
+        System.IO.File.WriteAllBytes(filename, bytes);
+        Debug.Log(string.Format("Took screenshot to: {0}", filename));
+    }
+
+
 }

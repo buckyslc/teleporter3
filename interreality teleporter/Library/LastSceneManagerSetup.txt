@@ -1,4 +1,4 @@
 sceneSetups:
-- path: Assets/cardboard canvas.unity
+- path: Assets/trying to save png.unity
   isLoaded: 1
   isActive: 1
