@@ -22,8 +22,8 @@ public class ViveTexturePainter : MonoBehaviour {
 	public Material baseMaterial; // The material of our base texture (Were we will save the painted texture)
 
 	Painter_BrushMode mode; //Our painter mode (Paint brushes or decals)
-	float brushSize; //The size of our brush
-    public float brushScale; //The scale of our brush
+	float brushSize; //The size of our brush calculate based on distance, brushScale, brushDropoff
+    public float brushScale = 1; //The scale of our brush
     public float brushDropoff; //The dropoff of our brush
     Color brushColor; //The selected color
 	int brushCounter=0,MAX_BRUSH_COUNT=2000; //To avoid having millions of brushes
@@ -73,8 +73,10 @@ public class ViveTexturePainter : MonoBehaviour {
 		if(HitTestUVPosition(ref uvWorldPosition)){
 			GameObject brushObj;
 
+            //brushColor.a = 1f / Mathf.Exp(brushSize * brushDropoff); // Brushes have alpha to have a merging effect when painted over.
             brushColor.a = 1f / Mathf.Exp(brushSize * brushDropoff); // Brushes have alpha to have a merging effect when painted over.
-
+            Debug.Log("just updated brushColor.a=" + brushColor.a + "  based on:  brushSize=" + brushSize + "  brushDropoff=" + brushDropoff);
+   
             brushObj =(GameObject)Instantiate(Resources.Load("TexturePainter-Instances/BrushEntity")); //Paint a brush
 			brushObj.GetComponent<SpriteRenderer>().color=brushColor; //Set the brush color
 					
@@ -99,8 +101,9 @@ public class ViveTexturePainter : MonoBehaviour {
 
         Ray cursorRay = new Ray(rController.transform.position, -rController.transform.up);
         if (Physics.Raycast(cursorRay,out hit, MAX_DISTANCE)){
-            brushSize = (hit.distance / MAX_DISTANCE) * brushScale;
-			MeshCollider meshCollider = hit.collider as MeshCollider;
+            brushSize = ((hit.distance / MAX_DISTANCE) * brushScale) +.003f;
+            Debug.Log("just updated brushSize=" + brushSize + "  based on hit.distance=" + hit.distance + "  MAX_DISTANCE=" + MAX_DISTANCE + "  brushScale=" + brushScale);
+            MeshCollider meshCollider = hit.collider as MeshCollider;
 			if (meshCollider == null || meshCollider.sharedMesh == null)
 				return false;			
 			Vector2 pixelUV  = new Vector2(hit.textureCoord.x,hit.textureCoord.y);
