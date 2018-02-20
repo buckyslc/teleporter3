@@ -42,7 +42,7 @@ public class ViveTexturePainter : MonoBehaviour {
         //var main = ps.main;
         //main.startColor = brushColor;
         var device = SteamVR_Controller.Input((int)rController.index);
-        //Debug.Log("check trigger");
+        //Debug.Log("check controller input");
         if (device.GetTouch(SteamVR_Controller.ButtonMask.Trigger)) {
             ps.Play();
             //Debug.Log("PS PLAY");
@@ -53,9 +53,9 @@ public class ViveTexturePainter : MonoBehaviour {
             //Debug.Log("ps stopped");
         }
 
-        if (device.GetTouchDown(SteamVR_Controller.ButtonMask.Touchpad)) {
+        if (device.GetPressDown(SteamVR_Controller.ButtonMask.Touchpad)) {
             Debug.Log("                                        TOUCHPAD");
-            Invoke("SaveTexture", 0.001f);
+            //Invoke("SaveTexture", 0.001f);
             StartCoroutine(SaveTextureToFile(tex));
             //StartCoroutine(TakeScreenshot());
         }
@@ -123,12 +123,14 @@ public class ViveTexturePainter : MonoBehaviour {
         tex = new Texture2D(canvasTexture.width, canvasTexture.height, TextureFormat.RGB24, false);
         tex.ReadPixels (new Rect (0, 0, canvasTexture.width, canvasTexture.height), 0, 0);
 		tex.Apply ();
-		RenderTexture.active = null;
-		baseMaterial.mainTexture =tex;	//Put the painted texture as the base
-		foreach (Transform child in brushContainer.transform) {//Clear brushes
-			Destroy(child.gameObject);
-            Debug.Log("Brushes cleared");
+        foreach (Transform child in brushContainer.transform)
+        {//Clear brushes
+            Destroy(child.gameObject);
+            Debug.Log("One brush cleared");
         }
+        RenderTexture.active = null;
+		baseMaterial.mainTexture =tex;	//Put the painted texture as the base
+		
 		//StartCoroutine ("SaveTextureToFile"); //Do you want to save the texture? This is your method!
         
         Invoke ("ShowCursor", 0.1f);
@@ -164,7 +166,7 @@ public class ViveTexturePainter : MonoBehaviour {
 		}
     //#endif
 
-    ////////////// SAVE SNAPSHOT ////////////////////////////
+    ////////////// SAVE SNAPSHOT -  ////////////////////////////
 
     private IEnumerator TakeScreenshot()
     {
