@@ -56,6 +56,7 @@ public class ViveTexturePainter : MonoBehaviour {
         if (device.GetPressDown(SteamVR_Controller.ButtonMask.Touchpad)) {
             Debug.Log("                                        TOUCHPAD");
             //Invoke("SaveTexture", 0.001f);
+            SaveTexture();
             StartCoroutine(SaveTextureToFile(tex));
             //StartCoroutine(TakeScreenshot());
         }
@@ -86,7 +87,7 @@ public class ViveTexturePainter : MonoBehaviour {
         if (brushCounter >= MAX_BRUSH_COUNT) { //If we reach the max brushes available, flatten the texture and clear the brushes
 			//saving=true;
 			//Invoke("SaveTexture",0.1f);
-            Invoke("SaveTexture",0.01f);			
+            SaveTexture();			
 		}
 	}
 
